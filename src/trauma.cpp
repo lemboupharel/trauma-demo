@@ -45,7 +45,10 @@ int main(int argc, char *argv[]){
     SDL_Texture *idle_texture = IMG_LoadTexture(state.renderer, "/home/pharel/Projects/trauma-demo/assets/idle.png");
     if (idle_texture == NULL) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "WARRNING", "Can't load game asset", nullptr);
+    } else{
+        SDL_SetTextureScaleMode(idle_texture, SDL_SCALEMODE_NEAREST);
     }
+    
 
     //start game loop
     bool running = true;
@@ -61,6 +64,10 @@ int main(int argc, char *argv[]){
             case SDL_EVENT_QUIT:
                 running = false;
                 break;
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.key == SDLK_ESCAPE)
+                    running = false;
+                break;
             }
         }
 
@@ -71,7 +78,21 @@ int main(int argc, char *argv[]){
         SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
         SDL_RenderClear(state.renderer);
 
-        SDL_RenderTexture(state.renderer, idle_texture, nullptr, nullptr);
+        SDL_FRect sprite {
+            .x = 0,
+            .y = 0,
+            .w = 21,
+            .h = 31
+        };
+
+        SDL_FRect drawSprite {
+            .x = (float)width/2,
+            .y = (float)height/2,
+            .w = 21,
+            .h = 31
+        };
+
+        SDL_RenderTexture(state.renderer, idle_texture, &sprite, &drawSprite);
 
         SDL_RenderPresent(state.renderer);
          
