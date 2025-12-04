@@ -13,12 +13,14 @@ struct trauma_state
 
 
 int main(int argc, char *argv[]){
-    //creating window
+    //initialize SDL3
     if (!SDL_Init(SDL_INIT_VIDEO)){
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error initializing SDL3", nullptr);
         return 1;
     }
 
+
+    //creating window
     int width = 800;
     int height = 600;
 
@@ -29,6 +31,8 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
+
+    //creating render
     state.renderer = SDL_CreateRenderer(state.windows, NULL);
     if(state.renderer == NULL){
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating render for window", nullptr);
@@ -36,7 +40,12 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    SDL_RenderPresent(state.renderer);
+
+    //creating sprite texture
+    SDL_Texture *idle_texture = IMG_LoadTexture(state.renderer, "/home/pharel/Projects/trauma-demo/assets/idle.png");
+    if (idle_texture == NULL) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "WARRNING", "Can't load game asset", nullptr);
+    }
 
     //start game loop
     bool running = true;
@@ -62,15 +71,13 @@ int main(int argc, char *argv[]){
         SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
         SDL_RenderClear(state.renderer);
 
+        SDL_RenderTexture(state.renderer, idle_texture, nullptr, nullptr);
+
         SDL_RenderPresent(state.renderer);
-        
+         
     }
 
-    
-
-    
-    
-
+    SDL_DestroyTexture(idle_texture);
     cleanup();
     return 0;
 }
