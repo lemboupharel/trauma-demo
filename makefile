@@ -1,12 +1,12 @@
-build:
-	g++ ./src/*.cpp -o ./bin/prog \
+compile:
+	g++ ./src/*.cpp -o ./build/trauma \
 	-I/usr/include/SDL3/ \
 	-I/usr/include/SDL3_image/ \
 	-L/usr/lib/ \
 	-lSDL3 -lSDL3_image
 
 run:
-	./bin/prog
+	./build/trauma
 
 clean:
-	rm ./bin/prog
+	rm ./build/trauma

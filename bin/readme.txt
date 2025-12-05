@@ -1,1 +1,0 @@
-### WARNING, Don't forget to import your SDL.dd and SDL_image.dll here beside your .exe file
