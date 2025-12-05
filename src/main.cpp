@@ -1,56 +1,25 @@
+#include <iostream>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-
 #include <SDL3_image/SDL_image.h>
+#include "../include/game.hpp"
 
-void cleanup();
-
-struct trauma_state
-{
-    SDL_Window *windows = NULL;
-    SDL_Renderer *renderer = NULL;
-} state;
-
+trauma_state state(NULL, NULL);
 
 int main(int argc, char *argv[]){
-    //initialize SDL3
-    if (!SDL_Init(SDL_INIT_VIDEO)){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error initializing SDL3", nullptr);
-        return 1;
+
+    //initialise game
+    if(!initialise(state)){
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Crash error", "Trauma-demo has crashed and was force to quite.\n contact me at 237672446810 for support and bug fixes", nullptr);
     }
 
-
-    //creating window
-    int width = 800;
-    int height = 600;
-
-    state.windows = SDL_CreateWindow("SDL3 demo", width, height, 0);
-    if(state.windows == NULL){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating SDL3 window", nullptr);
-        SDL_Quit();
-        return 1;
-    }
-
-
-    //creating render
-    state.renderer = SDL_CreateRenderer(state.windows, NULL);
-    if(state.renderer == NULL){
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating render for window", nullptr);
-        cleanup();
-        return 1;
-    }
-
-
-    //creating sprite texture
+    //Load game assets
     SDL_Texture *idle_texture = IMG_LoadTexture(state.renderer, "/home/pharel/Projects/trauma-demo/assets/idle.png");
-    if (idle_texture == NULL) {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "WARRNING", "Can't load game asset", nullptr);
-    } else{
-        SDL_SetTextureScaleMode(idle_texture, SDL_SCALEMODE_NEAREST);
-    }
+    SDL_SetTextureScaleMode(idle_texture, SDL_SCALEMODE_NEAREST);
     
+    //setup game data
 
-    //start game loop
+    //start the game loop
     bool running = true;
 
     while (running)
@@ -68,6 +37,11 @@ int main(int argc, char *argv[]){
                 if (event.key.key == SDLK_ESCAPE)
                     running = false;
                 break;
+            case SDL_EVENT_WINDOW_RESIZED:
+                state.WINDOW_WIDTH = event.window.data1;
+                state.WINDOW_HEIGHT = event.window.data2;
+                std::cout << "Width: " << state.WINDOW_WIDTH << " Height: " << state.WINDOW_HEIGHT << std::endl;
+                break;
             }
         }
 
@@ -75,7 +49,7 @@ int main(int argc, char *argv[]){
 
 
         //render
-        SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(state.renderer, 211, 211, 211, 211);
         SDL_RenderClear(state.renderer);
 
         SDL_FRect sprite {
@@ -86,8 +60,8 @@ int main(int argc, char *argv[]){
         };
 
         SDL_FRect drawSprite {
-            .x = (float)width/2,
-            .y = (float)height/2,
+            .x = 2,
+            .y = 2,
             .w = 21,
             .h = 31
         };
@@ -99,12 +73,7 @@ int main(int argc, char *argv[]){
     }
 
     SDL_DestroyTexture(idle_texture);
-    cleanup();
+    cleanup(state);
     return 0;
 }
 
-void cleanup(){
-    SDL_DestroyRenderer(state.renderer);
-    SDL_DestroyWindow(state.windows);
-    SDL_Quit();
-}

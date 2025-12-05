@@ -25,10 +25,8 @@ Trauma/
 ├── src/
 │    ├── main.cpp
 │    ├── game.cpp
-│    ├── renderer.cpp
-│    ├── input.cpp
-│    ├── physics.cpp
-│    └── ...
+│    ├── player.cpp
+│    └── physics.cpp
 ├── include/ # header files
 ├── CMakeLists.txt
 └── README.md
