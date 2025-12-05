@@ -16,8 +16,8 @@
         trauma_state(SDL_Window *windows, SDL_Renderer *renderer){
             this->windows = windows;
             this->renderer = renderer;
-            this->WINDOW_WIDTH = 800;
-            this->WINDOW_HEIGHT = 600;
+            this->WINDOW_WIDTH = 1600;
+            this->WINDOW_HEIGHT = 900;
             this->WINDOW_LOGICAL_WIDTH = 640;
             this->WINDOW_LOGICAL_HEIGHT = 320;
         }

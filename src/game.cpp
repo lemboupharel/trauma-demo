@@ -26,7 +26,8 @@ bool initialise(trauma_state &state){
     }
 
     // configure presentation
-    SDL_SetRenderLogicalPresentation(state.renderer, state.WINDOW_LOGICAL_WIDTH, state.WINDOW_LOGICAL_HEIGHT, SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
+    if(!SDL_SetRenderLogicalPresentation(state.renderer, state.WINDOW_LOGICAL_WIDTH, state.WINDOW_LOGICAL_HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX)) return false;
+    
     return true;
 }
 
